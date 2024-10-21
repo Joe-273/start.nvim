@@ -1,9 +1,22 @@
+local palette = require('catppuccin.palettes').get_palette 'mocha'
 return {
-  { -- Add indentation guides even on blank lines
-    'lukas-reineke/indent-blankline.nvim',
-    -- Enable `lukas-reineke/indent-blankline.nvim`
-    -- See `:help ibl`
-    main = 'ibl',
-    opts = {},
-  },
+  'shellRaining/hlchunk.nvim',
+  enabled = function()
+    return vim.bo.filetype ~= 'bigfile'
+  end,
+  event = { 'BufReadPre', 'BufNewFile' },
+  config = function()
+    require('hlchunk').setup {
+      chunk = {
+        enable = true,
+      },
+      indent = {
+        enable = vim.bo.filetype == 'python',
+      },
+      line_num = {
+        enable = true,
+        style = palette.yellow,
+      },
+    }
+  end,
 }
